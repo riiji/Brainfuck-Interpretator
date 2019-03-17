@@ -8,9 +8,10 @@ using namespace std;
 
 int main()
 {
+	FILE *file;
 	char buffer[200];
 	scanf("%s", &buffer);
-	freopen(buffer, "r", stdin);
+	file = fopen(buffer, "r");
 	fpos_t cpos;
 	stack<fpos_t> cid;
 	char cmnd;
@@ -20,7 +21,7 @@ int main()
 	char arr[30000];
 	memset(arr, 0, sizeof(arr));
 
-	while (scanf("%c", &cmnd) != EOF)
+	while (fscanf(file, "%c", &cmnd) != EOF)
 	{
 		if (cmnd == '>')
 			++i;
@@ -33,7 +34,11 @@ int main()
 		if (cmnd == '.')
 			putchar(arr[i]);
 		if (cmnd == ',')
+		{
 			arr[i] = getchar();
+			if (arr[i] == '\n')
+				arr[i] = getchar();
+		}
 		if (cmnd == '[')
 		{
 			fgetpos(stdin, &cpos);
@@ -47,6 +52,4 @@ int main()
 				fsetpos(stdin, &cid.top());
 		}
 	}
-
-
 }
